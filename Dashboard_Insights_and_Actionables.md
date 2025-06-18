@@ -5,7 +5,7 @@ using the `NPLC_product_report` dataset.
 
 ---
 
-## 🔍 Key Observations
+## Key Observations
 
 1. **Business KPIs Available at a Glance**
    - The dashboard clearly displays:
@@ -14,7 +14,7 @@ using the `NPLC_product_report` dataset.
      - Number of Disconnected Orders
 
 2. **Trend of Disconnected Orders**
-   - 📉 In **2025**, disconnected orders are **decreasing**, which is a **positive indicator** of process
+   - In **2025**, disconnected orders are **decreasing**, which is a **positive indicator** of process
      stabilization or customer retention improvements.
 
 3. **High Average Delay Days**
@@ -34,14 +34,14 @@ using the `NPLC_product_report` dataset.
      - Running **targeted campaigns** in those areas
 
 6. **Top Performing Companies**
-   - 🏢 A chart displaying **orders by company** highlights the **top 10 companies** contributing the most orders.
+   - A chart displaying **orders by company** highlights the **top 10 companies** contributing the most orders.
    - Suggestion: 
      - Maintain relations with top companies
      - Launch **marketing campaigns** to **boost engagement** with lower-tier companies
 
 ---
 
-## ✅ Actionable Business Steps
+## Actionable Business Steps
 
 | Area                  | Action Item                                                                 |
 |-----------------------|------------------------------------------------------------------------------|

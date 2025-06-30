@@ -1,64 +1,98 @@
-#Dashboard Insights and Business Recommendations
+# 📊 Order Analysis Power BI Dashboard
 
-This document captures the key insights and actionable recommendations derived from the Power BI dashboard built
-using the `NPLC_product_report` dataset.
+## 🧩 Overview
 
----
-
-## Key Observations
-
-1. **Business KPIs Available at a Glance**
-   - The dashboard clearly displays:
-     - Total Amount Spent
-     - Average Delay in Order Closure
-     - Number of Disconnected Orders
-
-2. **Trend of Disconnected Orders**
-   - In **2025**, disconnected orders are **decreasing**, which is a **positive indicator** of process
-     stabilization or customer retention improvements.
-
-3. **High Average Delay Days**
-   - The **average delay** for order closure is around **80 days**.
-   - This requires immediate investigation — a standard SLA (Service Level Agreement) such as
-      **"close all orders within 40 days"** can be implemented to improve operational efficiency.
-
-4. **Drop in Orders in 2025**
-   - There is a noticeable **drop in order count in 2025**.
-   - This may indicate a **market shift**, internal issue, or external event.
-   - Suggestion: Conduct a root cause analysis for the decline.
-
-5. **Discount vs Closed Orders Relationship**
-   - The stacked column + line chart shows a **direct correlation** between **total discount** and **closed orders**.
-   - To boost order closures, consider:
-     - Increasing discount offerings in **low-performing regions**
-     - Running **targeted campaigns** in those areas
-
-6. **Top Performing Companies**
-   - A chart displaying **orders by company** highlights the **top 10 companies** contributing the most orders.
-   - Suggestion: 
-     - Maintain relations with top companies
-     - Launch **marketing campaigns** to **boost engagement** with lower-tier companies
+This project involves analyzing product order data from the past **3 years** using **Power BI Desktop**. The data was sourced from an **Excel file** and processed to build a multi-layered interactive dashboard that helps in understanding order status, delivery timelines, conversion rates, and customer churn.
 
 ---
 
-## Actionable Business Steps
+## 🛠️ Design Approach
 
-| Area                  | Action Item                                                                 |
-|-----------------------|------------------------------------------------------------------------------|
-| SLA Policy            | Implement a maximum order closure SLA (e.g., within 40 days)                 |
-| Order Drop in 2025    | Perform trend analysis and root cause investigation                          |
-| Regional Strategy     | Increase discounts in low-performing regions                                 |
-| Customer Segmentation | Design focused outreach for companies with lower order contributions         |
-| Efficiency Tracking   | Add KPIs like **Discount Efficiency** or **Closure Rate** by Region/Company  |
+I have structured the dashboard into **three levels of metrics** for better clarity and data storytelling:
+
+### 🔹 L0 – Summary Metrics (High-Level KPIs)
+- **Total Orders**
+- **Conversion Rate (%)**
+- **Churn Rate (%)**
+
+### 🔹 L1 – Operational Metrics
+- Order status breakdown: Disconnected vs Closed vs In-progress
+- Delivery performance metrics (80th, 90th, 100th percentiles)
+- Company-wise and region-wise delivery comparisons
+
+### 🔹 L2 – Deep Dive Analytics
+- Time-based trends in conversion and churn
+- Detailed analysis by:
+  - `PT_A_CIRCLE`
+  - `Company Name`
+  - `Year/Month`
+- Filters by Company Category, Activity Type, and Year
 
 ---
 
-## 💬 Interview Explanation Snippet
+## 📊 DAX Measures Used
 
-> “My dashboard helped surface key operational insights, such as an 80-day average delay in order closure, and a
-positive downward trend in disconnected orders. By comparing total discount and closed orders across regions,
-I observed that higher discounts directly led to more closures. This allowed me to recommend increasing discounts in
-> underperforming areas. I also built customer-level insights to prioritize marketing toward low-engagement companies. These findings are presented with visual clarity and documented for decision-makers.”
+```DAX
+Total Orders = COUNTROWS('Sheet1')
 
----
+Conversion Rate (%) = 
+DIVIDE(
+    CALCULATE(COUNTROWS('Sheet1'), 'Sheet1'[SRF_STATUS] = "SRF --CLOSED"),
+    COUNTROWS('Sheet1'),
+    0
+) * 100
 
+Churn Rate (%) = 
+DIVIDE(
+    CALCULATE(COUNTROWS('Sheet1'), 'Sheet1'[SRF_STATUS] = "Disconnected"),
+    COUNTROWS('Sheet1'),
+    0
+) * 100
+
+Delivery_80th_By_Company = 
+CALCULATE(
+    PERCENTILEX.INC(
+        VALUES(Sheet1[FAN_NO]), 
+        Sheet1[delivery_days],  
+        0.8
+    ),
+    ALLEXCEPT(Sheet1, Sheet1[Company_Name])
+)
+
+💡 Key Insights
+Total Orders over the past 3 years: 572
+
+Conversion Rate: ~41.43%
+
+Churn Rate (Disconnected orders): 7.52%
+
+Some companies (e.g., ACTWNET, INDISAT) show high churn rates.
+
+Certain regions (e.g., ORISSA, RAJASTHAN) consistently perform well in conversion rates.
+
+Delivery timelines for some companies exceed the 90th percentile, indicating SLA risks.
+
+Fluctuations in conversion rate over time suggest seasonal behavior or process inconsistencies.
+
+✅ Actionable Recommendations
+Investigate companies with high churn to improve retention strategies.
+
+Optimize delivery processes for companies exceeding expected delivery timelines.
+
+Deploy targeted interventions in low-conversion regions (e.g., BIHAR, PUNJAB).
+
+Standardize workflows for consistent closure to improve conversion trends.
+
+Analyze churn patterns by Activity Type (Downgrade, Upgrade, DeleteDrops) for root cause analysis.
+
+🔍 Scope for Further Analysis
+Rejection Remarks Analysis:
+Perform root-cause analysis on orders with rejection or disconnection remarks to identify recurring issues (e.g., incorrect documentation, customer not reachable, pricing issues).
+➤ This can be analyzed at each level (company-wise, region-wise, activity type, etc.) to provide targeted corrective actions.
+
+📁 Files
+Order_Analysis_Dashboard.pbix – Power BI dashboard file
+
+Order_Data.xlsx – Raw data (last 3 years)
+
+Order_Dashboard_Documentation.md – This documentation
